@@ -36,6 +36,8 @@ export default {
   参考：
   0.
   https://forum.vuejs.org/t/how-to-detect-body-scroll/7057/5
+  0.1
+  https://github.com/wangpin34/vue-scroll
   1.
   http://blog.csdn.net/xiaogezl/article/details/70809155
   2.
