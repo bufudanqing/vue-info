@@ -1,0 +1,29 @@
+定义一个组件
+// title.vue
+<template>
+  <div>{{title}}</div>
+</template>
+<script>
+  export default {
+    props: {
+      title: String
+    }
+</script>
+
+在另一个组件里用
+// index.vue
+<template>
+  <nav-title title="标题"></nav-title>
+</template>
+<script>
+  import navTitle form 'title.vue'
+  export default {
+    el: '#app',
+    components: {
+      navTitle
+    }
+  }
+</script>
+
+参考：
+1.https://www.zhihu.com/question/41256351?sort=created
