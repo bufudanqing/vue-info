@@ -1,0 +1,46 @@
+1. 在vue中获取dom元素
+在vue中可以通过给标签加ref属性来获取该元素
+例如：通过监听scroll事件来改变导航的高度
+<div class="navbar-wrapper" ref="myNavWrapper"></div>
+...
+export default {
+    name: 'index',
+    data () {
+      return {
+        scrolled: false
+      }
+    },
+  
+    methods: {
+      handleScroll () {
+        this.scrolled = window.scrollY > 0
+        if (this.scrolled === true) {
+          this.$refs.myNav.style.height = 50 + 'px'
+          this.$refs.myNav.style.backgroundColor = 'rgba(254,242,205,0.9)'
+          this.$refs.myNavWrapper.style.paddingTop = 10 + 'px'
+        } else {
+          this.$refs.myNav.style.height = 75 + 'px'
+          this.$refs.myNavWrapper.style.paddingTop = 20 + 'px'
+          this.$refs.myNav.style.backgroundColor = 'rgba(254,242,205,0.6)'
+        }
+      }
+    },
+    created () {
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed () {
+      window.removeEventListener('scroll', this.handleScroll)
+    }
+  }
+  
+  参考：
+  0.
+  https://forum.vuejs.org/t/how-to-detect-body-scroll/7057/5
+  1.
+  http://blog.csdn.net/xiaogezl/article/details/70809155
+  2.
+  http://blog.csdn.net/xiaomogg/article/details/55804478
+  3.
+  https://segmentfault.com/q/1010000008849899?_ea=1756967
+ 
+  
