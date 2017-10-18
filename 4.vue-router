@@ -31,5 +31,89 @@ const app = new Vue({
 执行过程：当用户点击 router-link 标签时，会去寻找它的 to 属性， 它的 to 属性和 js 中配置的路径{ path: '/home', component: Home}  path 一一对应，
 从而找到了匹配的组件， 最后把组件渲染到 <router-view> 标签所在的地方。所有的这些实现才是基于hash 实现的。
 
+创建路由：
+1. 安装vue-router,
+2. 新建组件， xx.vue , yy.vue
+=====
+<template>
+    <div>
+        <h1>home</h1>
+        <p>{{msg}}</p>
+    </div>
+</template>
+<script>
+    export default {
+        data () {
+            return {
+                msg: "我是home 组件"
+            }
+        }
+    }
+</script>
+=====
+<template>
+    <div>
+        <h1>about</h1>
+        <p>{{aboutMsg}}</p>
+    </div>
+</template>
+<script>
+    export default {
+        data () {
+            return {
+                aboutMsg: '我是about组件'
+            }
+        }
+    }
+</script>
+======
+
+3. 在 app.vue中定义<router-link> 和 <router-view>
+router-link定义点击后导航到哪个路径下
+对应的组件渲染到router-view下
+4. 在src下新建一个router.js 或者index.js定义router
+ a.引入组件 b.告诉vue使用vuerouter  Vue.use(VUeRouter)
+ import Vue from "vue";
+import VueRouter from "vue-router";
+
+// 引入组件
+import home from "./home.vue";
+import about from "./about.vue";
+
+// 要告诉 vue 使用 vueRouter
+Vue.use(VueRouter);
+
+const routes = [
+    {
+        path:"/home",
+        component: home
+    },
+    {
+        path: "/about",
+        component: about
+    }
+]
+
+var router =  new VueRouter({
+    routes
+})
+export default router;
+
+5. 把路由注入到根实例中，启动路由。这里其实还有一种方法，
+就像vuex  store 注入到根实例中一样，我们也可以把vueRouter 直接注入到根实例中。
+在main.js中引入路由，注入到根实例中。
+
+import Vue from 'vue'
+import App from './App.vue'
+
+// 引入路由
+import router from "./router.js"
+new Vue({
+  el: '#app',
+  router,  // 注入到根实例中
+  render: h => h(App)
+})
+
+6. 重定向首页，vueRouter中用 redirect 来定义重定向
 参考：
 1.http://www.cnblogs.com/SamWeb/p/6610733.html
