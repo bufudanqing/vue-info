@@ -1,0 +1,65 @@
+npm install echarts --save
+1.全局引入
+通过 npm 上安装的 ECharts 和 zrender 会放在node_modules目录下。
+可以直接在项目代码中require('echarts') 得到 ECharts。
+====================
+注意： 
+1.这里echarts初始化应在钩子函数mounted()中，
+这个钩子函数是在el 被新创建的 vm.$el 替换，并挂载到实例上去之后调用
+2.这里之所以使用 require 而不是 import，是因为 require 可以直接从 node_modules 中查找，
+而 import 必须把路径写全。
+====================
+
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById('main'));
+// 绘制图表
+myChart.setOption({
+    title: { text: 'ECharts 入门示例' },
+    tooltip: {},
+    xAxis: {
+        data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+    },
+    yAxis: {},
+    series: [{
+        name: '销量',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20]
+    }]
+});
+
+默认使用 require('echarts') 
+得到的是已经加载了所有图表和组件的 ECharts 包，因此体积会比较大，
+如果在项目中对体积要求比较苛刻，也可以只按需引入需要的模块。
+例如上面示例代码中只用到了柱状图，提示框和标题组件，因此在引入的时候也只需要引入这些模块，
+可以有效的将打包后的体积从 400 多 KB 减小到 170 多 KB。
+hello.vue:
+
+// 引入 ECharts 主模块
+var echarts = require('echarts/lib/echarts');
+// 引入柱状图
+require('echarts/lib/chart/bar');
+// 引入提示框和标题组件
+require('echarts/lib/component/tooltip');
+require('echarts/lib/component/title');
+
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById('main'));
+// 绘制图表
+myChart.setOption({
+    title: { text: 'ECharts 入门示例' },
+    tooltip: {},
+    xAxis: {
+        data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+    },
+    yAxis: {},
+    series: [{
+        name: '销量',
+        type: 'bar',
+        data: [5, 20, 36, 10, 10, 20]
+    }]
+});
+
+
+参考：
+1.
+http://blog.csdn.net/mr_wuch/article/details/70225364
