@@ -1,0 +1,144 @@
+它可以遍历数组类型以及对象类型的数据，js 里面的数组本身实质上也是对象，这里遍历数组和对象的时候，方式相似但又稍有不同。
+（一）遍历对象
+<div id="app">
+  <ul>
+    <li v-for="(val, key, index) in me">{{index}}. {{key}}: {{val}}</li>
+  </ul>
+</div>
+...
+var vm = new Vue({
+  el: '#app',
+  data: {
+    me: {
+      name: 'Dale',
+      age: 22,
+      sex: 'male',
+      height: 170
+    }
+  }
+});
+
+这里，v-for 接收的参数相对较复杂，但是可以分为三个部分：
+（1）括号及其内的遍历结果信息（val, key, index）
+其中，val 是遍历得到的属性值，key 是遍历得到的属性名，index 是遍历次序，这里的 key/index 都是可选参数，如果不需要，这个指令其实可以写成 v-for="val in me"；
+（2）遍历关键词 in
+in 可以使用 of 替代，官方的说法是“它是最接近 JavaScript 迭代器的语法”，但其实使用上并没有任何区别；
+（3）被遍历对象 me
+me 是绑定在实例 data属性上的一个属性，实际上，它是有一个执行环境的，也即是我们接触最多的 vue 实例，模板中，我们仍旧可以像在 methods 以及计算属性中一样，
+通过 this 访问到它，这里的 me 其实就相当于 this.me，模板中直接写 this.me 也是可行的。
+<div id="app">
+  <ul>
+    <li>0. name: Dale</li>
+    <li>1. age: 22</li>
+    <li>2. sex: male</li>
+    <li>3. height: 170</li>
+  </ul>
+</div>
+
+（二）遍历数组
+
+<div id="app">
+  <ul>
+    <li v-for="(item, index) in items">{{index}}. {{item}}</li>
+  </ul>
+</div>
+...
+var vm = new Vue({
+  el: '#app',
+  data: {
+    items: ['apple', 'tomato', 'banana', 'watermelon']
+  }
+});
+
+结果如下：
+<div id="app">
+  <ul>
+    <li>0. apple</li>
+    <li>1. tomato</li>
+    <li>2. banana</li>
+    <li>3. watermelon</li>
+  </ul>
+</div>
+
+（三）遍历“整数”
+理论上来说，整数并不是一个可遍历的单元，但是 vue 这里相当于给我们提供了一个方便方式来减少重复代码。
+<div id="app">
+  <ul>
+    <li v-for="n in num">{{n}}</li>
+  </ul>
+</div>
+...
+var vm = new Vue({
+  el: '#app',
+  data: {
+    num: 3
+  }
+});
+
+结果：
+<div id="app">
+  <ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+  </ul>
+</div>
+
+（二）与 v-if 组合
+
+添加了 v-for 指令的标签，实际上也可以同时添加 v-if 指令，
+但值得注意的是，v-for 的优先级更高，渲染模板时，相当于对每次遍历的结果进行了一次条件判断。
+<div id="app">
+   <ul class="persons">
+    <li v-for="person in persons" v-if="person.age >= 23">name: {{person.name}}, age: {{person.age}};</li>
+  </ul> 
+</div>
+...
+var vm = new Vue({
+  el: '#app',
+  data: {
+    persons: [
+      {
+        name: 'Dale',
+        age: 22
+      }, 
+      {
+        name: 'Tim',
+        age: 30
+      },
+      {
+        name: 'Rex',
+        age: 23
+      }
+    ]
+  }
+});
+这里先遍历了 persons 的所有元素，然后检查每次得到的 person 的是否大于或等于 23，是则输出，否则不输出，渲染结果如下：
+<div id="app">
+  <ul class="persons">
+    <li>name: Tim, age: 30;</li>
+    <li>name: Rex, age: 23;</li>
+  </ul>
+</div>
+
+如果要让 v-if 指令的优先级更高，可以考虑在 v-for 指令所绑定的标签的父级上添加 v-if 指令。
+三、注意事项
+一）key
+与 v-for 一样，在不绑定 key 属性的情况下，vue 默认会重用元素以提高性能，如果不需要它的默认行为，显式绑定一个唯一的 key 即可。
+（二）数据 -> 视图更新
+vue 的视图更新是依赖于 getter/setter 的，如果直接修改、增加、删除数组元素，并不会触发视图的更新。这里 vue 重写了如下方法：
+push
+pop
+shift
+unshift
+splice
+sort
+reverse
+当通过它们修改数据的时候，将会触发视图的更新。
+new Vue({
+  data: {
+    arr: [1, 2, 3]
+  }
+});
+
+参考：http://www.jianshu.com/p/d348c8f861c3
