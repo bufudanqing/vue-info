@@ -1,0 +1,39 @@
+参考：
+1.
+官方提供的 -- 【滚动行为】
+https://router.vuejs.org/zh-cn/advanced/scroll-behavior.html
+2.
+http://www.zhimengzhe.com/Javascriptjiaocheng/360847.html
+
+未实践代码：
+
+router.afterEach((to, from, next) => {
+    window.scrollTo(0, 0);
+});
+
+可用代码：
+
+import Vue from 'vue'
+import Router from 'vue-router'
+import index from '@/components/index.vue'
+ 
+Vue.use(Router)
+ 
+const router = new Router({
+  mode: 'history',//这种方法只能在history模式下使用
+  routes: [
+    {
+      path: '/',
+      name: 'index',
+      component: index
+    }
+  ],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition  //游览器返回记住位置
+    } else {
+      return { x: 0, y: 0 } //滚动到顶
+    }
+  }
+})
+export default router
