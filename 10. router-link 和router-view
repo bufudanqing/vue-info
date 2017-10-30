@@ -1,0 +1,13 @@
+参考：
+vue官方文档
+1.
+https://router.vuejs.org/zh-cn/api/router-link.html
+<router-link>组件支持用户在具有路由功能的应用中（点击）导航。通过to属性指定目标地址，默认渲染成带有正确连接的a标签，可以通过配置
+tag属性生成别的标签。
+
+
+2.
+https://router.vuejs.org/zh-cn/api/router-view.html
+<router-view> 组件是一个 functional 组件，
+渲染路径匹配到的视图组件。<router-view> 渲染的组件还可以内嵌自己的 <router-view>，根据嵌套路径，渲染嵌套组件。
+
