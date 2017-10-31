@@ -1,0 +1,55 @@
+定义路由时可以配置meta字段
+
+const router = new VueRouter({
+  routes: [
+    path: '/foo',
+    component: FOO,
+    children: [
+       {
+          path: 'bar',
+          component: Bar,
+          //a meta field
+          meta: { requiresAuth: true }
+       }
+    ]
+  ]
+})
+
+那么如何访问这个 meta 字段呢？
+
+官网上的例子是遍历整个路由模块，然后检查哪个路由下面有meta这个属性，如果检测到有meta属性，就进行一些处理！
+第一句meta: {requiresAuth: true}，在路由/foo/bar下设置了meta这个对象，
+ if (to.matched.some(record => record.meta.requiresAuth) )，
+ 等同于
+ function(record) {
+   return record.meta.requiresAuth;
+  }
+  
+  这句话就是返回遍历的某个路由对象，我们定义为为record，检测这个对象是否拥有meta这个对象，如果有meta这个对象，检测它的meta对象是不是有requiresAuth这个属性，且为true，如果满足上述条件，就确定了是这个/foo/bar路由。案例中写了this route requires auth, check if logged in ，说明如果auth信息是必须的，检验是否登录，也就是在这个路由下，如果检测到auth这个用户名，那么进行下一步操作！案例下面就有了判断，if (!auth.loggedIn())，通过自己封装的检验方法auth.loggedIn()，检验用户是否登录，从而决定渲染下一步操作！
+总结，vue-router路由元信息说白了就是通过meta对象中的一些属性来判断当前路由是否需要进一步处理，如果需要处理，按照自己想要的效果进行处理即可！
+
+首先，我们称呼 routes 配置中的每个路由对象为 路由记录。路由记录可以是嵌套的，
+因此，当一个路由匹配成功后，他可能匹配多个路由记录
+例如，根据上面的路由配置，/foo/bar 这个 URL 将会匹配父路由记录以及子路由记录。
+一个路由匹配到的所有路由记录会暴露为 $route 对象（还有在导航守卫中的路有对象）的 $route.matched 数组。
+因此，我们需要遍历 $route.matched 来检查路由记录中的 meta 字段。
+
+下面例子展示在全局导航守卫中检查元字段：
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!auth.loggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 确保一定要调用 next()
+  }
+})
+
