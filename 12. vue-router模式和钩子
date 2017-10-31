@@ -1,0 +1,82 @@
+参考：
+http://www.jianshu.com/p/1c6b5c484239
+
+钩子是什么，英文“hook”,它是一种事件劫持机制，也就是说它会比你的事件更早进行执行处理。
+
+你可以简单地把它理解为vue的内置事件，但是这个内置事件是由你去配置的。
+用来处理比如“被拦截的函数调用、事件、消息”的代码都叫钩子。
+
+1. 配置路由模式（三种模式）
+const router = new VueRouter({//创建路由实例
+mode: 'history',//模式
+routes
+})
+默认hash: 使用URL hash值作为路由，支持所有浏览器
+· history: 依赖HTML5 History API和服务器配置
+· abstract：支持所有 JavaScript 运行环境，如 Node.js 服务器端。如果发现没有浏览器的 API，路由会自动强制进入这个模式。
+默认是hash,路由通过“#”隔开，但是如果工程中有锚链接或者路由中有hash值，原先的“#”就会对页面跳转产生影响；所以就需要使用history模式；
+采用history模式有一个缺点就是会在当前路由下刷新会找不到页面(如下图所示)
+
+2.路由导航钩子
+2.1 全局钩子
+const router = new VueRouter({ ... })
+//导航开始时
+   router.beforeEach((to, from, next) => {
+         // to 目标路由对象
+         // from 即将进入的路由对象
+         //next Function必须调用
+             // next() 进行下一个钩子，直到全部钩子执行完
+             //next(false) 中断当前
+              //next('/') or next({path:'/'})
+  })
+//导航结束时
+  router.afterEach((to, from) => {
+   //afterEach没有next，不能改变导航
+})
+
+2.2 某个路由的钩子
+你可以在路由配置上直接定义 beforeEnter , afterEnter钩子：
+
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      beforeEnter: (to, from, next) => {
+        // ...
+      },
+     afterEnter: (to, from) => {
+        // ...
+      }
+    }
+  ]
+})
+
+2.3 组件内钩子
+
+在组件内直接定义以下钩子
+beforeRouteEnter
+beforeRouteUpdate (2.2 新增)
+beforeRouteLeave
+
+const Foo = {
+  template: `...`,
+  beforeRouteEnter (to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当钩子执行前，组件实例还没被创建
+  },
+  beforeRouteUpdate (to, from, next) {
+    // 在当前路由改变，但是改组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+  }
+}
+
+beforeRouteEnter 钩子 不能 访问 this，因为钩子在导航确认前被调用,因此即将登场的新组件还没被创建。
+
