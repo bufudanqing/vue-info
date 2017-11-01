@@ -1,0 +1,17 @@
+参考文档：
+http://laomu1988.github.io/fe-books/vue-router/api/go.html
+
+
+
+this.$router.push({path:'/index'})
+
+html:
+
+<span @click="clickFn">点我</span>
+
+js：
+
+methods:{
+    clickFn:function(){
+        this.$router.go('/login');//其中login是你定义的一个路由模块
+}
