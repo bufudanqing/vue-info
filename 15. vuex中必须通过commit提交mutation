@@ -1,0 +1,22 @@
+参考：
+1. https://vuex.vuejs.org/zh-cn/mutations.html
+
+2. https://segmentfault.com/q/1010000008640002
+
+
+为什么不能直接调用mutation方法，而是必须得通过commit来提交mutation呢？
+
+更改 Vuex 的 store 中的状态的唯一方法是提交 mutation。Vuex 中的 mutations 非常类似于事件：每个 mutation 都有一个字符串的 事件类型 (type) 和 一个 回调函数 (handler)。这个回调函数就是我们实际进行状态更改的地方，并且它会接受 state 作为第一个参数：
+
+const store = new Vuex.Store({
+  state: {
+    count: 1
+  },
+  mutations: {
+    increment (state) {
+      // 变更状态
+      state.count++
+    }
+  }
+})
+
