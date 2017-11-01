@@ -1,0 +1,38 @@
+
+
+1.在router.js里面（即路由文件中），此时模式为 history
+
+const router = new VueRouter({
+  mode: 'history',
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if (from.meta.keepAlive) {
+        from.meta.savedPosition = document.body.scrollTop
+      }
+      return { x: 0, y: to.meta.savedPosition || 0 }
+    }
+  }
+})
+
+
+2.在router.js里面需要记录位置的单页面里面
+let routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: home,
+    meta: {
+      title: 'home',
+      keepAlive: true
+    }
+  }
+  
+  3.App.vue里面<div id="app">  这样写的意义就是不缓存所有页面，哪个地方写了 keepAlive：true,哪个地方就记录位置(加缓存)
+  
+  <keep-alive >
+      <router-view v-if="$route.meta.keepAlive"></router-view>
+  </keep-alive>
+  <router-view v-if="!$route.meta.keepAlive"></router-view>
