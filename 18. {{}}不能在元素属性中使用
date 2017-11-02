@@ -1,0 +1,10 @@
+数据绑定最常见的形式就是使用“Mustache”语法 (双大括号) 的文本插值：
+Mustache 标签将会被替代为对应数据对象上 msg 属性的值。无论何时，绑定的数据对象上 msg 属性发生了改变，插值处的内容都会更新。
+通过使用 v-once 指令，你也能执行一次性地插值，当数据改变时，插值处的内容不会更新。但请留心这会影响到该节点上所有的数据绑定：
+<span v-once>这个将不会改变: {{ msg }}</span>
+
+Mustache 语法不能作用在 HTML 特性上，遇到这种情况应该使用 v-bind 指令：
+<div v-bind:id="dynamicId"></div>
+
+这同样适用于布尔类特性，如果求值结果是 falsy 的值 (译者注：falsy 不是 false，参考这里)，则该特性将会被删除：
+<button v-bind:disabled="isButtonDisabled">Button</button>
