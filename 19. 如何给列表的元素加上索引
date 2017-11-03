@@ -1,0 +1,22 @@
+参考：
+1.
+https://segmentfault.com/q/1010000007570468/
+
+
+如果只是用索引来做id的话，可以这样做
+class="tab-title" 
+v-on:click="tab" 
+v-for="(tabTitle,index) in tabTitleList"
+:id="index"
+
+如果id在 tabTitleList 里的话，可以这样做
+
+class="tab-title" 
+v-on:click="tab" 
+v-for="(tabTitle,index) in tabTitleList"
+:id="tabTitle.id"
+
+如果我想在:id中加上字符串前缀怎么办呢？ 比如index是1，我想id是 fee_1，
+
+:id="'fee_'+index"
+
