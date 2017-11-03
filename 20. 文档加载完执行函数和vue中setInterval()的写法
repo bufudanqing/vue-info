@@ -1,0 +1,41 @@
+1. 文档加载完执行函数
+
+export default {
+    //这里可以用created或mounted
+    mounted() {
+        this.changeIcon()
+    },
+    methods: {
+        changeIcon () {}
+    }
+}
+
+在vue的生命周期beforeCreate或者Create的时候调用一次就好了!
+另外附上vue生命周期示例。
+
+
+2. vue.js怎么setInterval定时调用方法
+
+可以使用箭头函数
+methods: {
+    A: function() {
+        setInterval(() => { 
+            this.B();
+        }, 500)
+    },
+    B: function() {
+        console.log('func B')
+    }
+}
+
+或者
+
+methods: {
+    A: function() {
+        setInterval(this.B, 500)
+    },
+    B: function() {
+        console.log('func B')
+    }
+}
+
