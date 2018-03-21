@@ -34,6 +34,7 @@ const mutations = {
   [types.PRICE_CURRENT_VERSION_STATE](state, price_CurrentVersionState){ // 当前版本
     state.price_CurrentVersionState = price_CurrentVersionState
   },
+  
 
   [types.PRICE_SET_STAGE_DATA](state, price_StageData){  // 面包屑 阶段数据
     state.price_StageData = price_StageData;
