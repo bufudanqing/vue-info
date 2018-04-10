@@ -1,0 +1,97 @@
+ToBoolean操作
+
+Undefined	false
+Null	false
+Boolean	结果等于输入的参数（不转换）
+Number	如果参数为 +0, -0 或 NaN，则结果为 false；否则为 true。
+String	如果参数为空字符串，则结果为 false；否则为 true。
+Object	true
+
+=================================================================
+
+逻辑 NOT 运算符,由感叹号（!）表示。逻辑 NOT 运算符返回的一定是 Boolean 值
+
+逻辑 NOT 运算符的行为如下：
+如果运算数是对象，返回 false
+如果运算数是数字 0，返回 true
+如果运算数是 0 以外的任何数字，返回 false
+如果运算数是 null，返回 true
+如果运算数是 NaN，返回 true
+如果运算数是 undefined，发生错误
+
+通常，该运算符用于控制循环：
+
+var bFound = false;
+var i = 0;
+
+while (!bFound) {
+  if (aValue[i] == vSearchValues) {
+    bFound = true;
+  } else {
+    i++;
+  }
+}
+
+在这个例子中，Boolean 变量（bFound）用于记录检索是否成功。
+找到问题中的数据项时，bFound 将被设置为 true，!bFound 将等于 false，意味着运行将跳出 while 循环。
+
+判断 ECMAScript 变量的 Boolean 值时，也可以使用逻辑 NOT 运算符。这样做需要在一行代码中使用两个 NOT 运算符。
+无论运算数是什么类型，第一个 NOT 运算符返回 Boolean 值。第二个 NOT 将对该 Boolean 值求负，从而给出变量真正的 Boolean 值。
+
+
+var bFalse = false;
+var sRed = "red";
+var iZero = 0;
+var iThreeFourFive = 345;
+var oObject = new Object;
+
+document.write("bFalse 的逻辑值是 " + (!!bFalse));
+document.write("sRed 的逻辑值是 " + (!!sRed));
+document.write("iZero 的逻辑值是 " + (!!iZero));
+document.write("iThreeFourFive 的逻辑值是 " + (!!iThreeFourFive));
+document.write("oObject 的逻辑值是 " + (!!oObject));
+
+结果：
+bFalse 的逻辑值是 false
+sRed 的逻辑值是 true
+iZero 的逻辑值是 false
+iThreeFourFive 的逻辑值是 true
+oObject 的逻辑值是 true 
+=====================================================
+
+逻辑 AND 运算符
+
+运算数 1	运算数 2	结果
+true	true	true
+true	false	false
+false	true	false
+false	false	false
+
+
+如果某个运算数不是原始的 Boolean 型值，逻辑 AND 运算并不一定返回 Boolean 值：
+如果一个运算数是对象，另一个是 Boolean 值，返回该对象。
+如果两个运算数都是对象，返回第二个对象。
+如果某个运算数是 null，返回 null。
+如果某个运算数是 NaN，返回 NaN。
+如果某个运算数是 undefined，发生错误。
+与 Java 中的逻辑 AND 运算相似，ECMAScript 中的逻辑 AND 运算也是简便运算，即如果第一个运算数决定了结果，就不再计算第二个运算数。
+对于逻辑 AND 运算来说，如果第一个运算数是 false，那么无论第二个运算数的值是什么，结果都不可能等于 true。
+
+提示：在使用逻辑 AND 运算符时，必须记住它的这种简便计算特性。
+
+=======================================
+
+逻辑 OR 运算符
+运算数 1	运算数 2	结果
+true	true	true
+true	false	true
+false	true	true
+false	false	false
+
+与逻辑 AND 运算符相似，如果某个运算数不是 Boolean 值，逻辑 OR 运算并不一定返回 Boolean 值：
+如果一个运算数是对象，并且该对象左边的运算数值均为 false，则返回该对象。
+如果两个运算数都是对象，返回第一个对象。
+如果最后一个运算数是 null，并且其他运算数值均为 false，则返回 null。
+如果最后一个运算数是 NaN，并且其他运算数值均为 false，则返回 NaN。
+如果某个运算数是 undefined，发生错误。
+与逻辑 AND 运算符一样，逻辑 OR 运算也是简便运算。对于逻辑 OR 运算符来说，如果第一个运算数值为 true，就不再计算第二个运算数。
